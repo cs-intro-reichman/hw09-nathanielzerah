@@ -1,26 +1,68 @@
-/** Represents an iterator over a list of CharData objects. */
-public class ListIterator {
+import java.util.HashMap;
+import java.util.Random;
 
-    // Current position in the list (cursor)
-    Node current;
+public class LanguageModel {
+    HashMap<String, List> CharDataMap;
+    int windowLength;
+    Random randomGenerator;
 
-    /** Constructs a list iterator, starting at the given node. */
-    public ListIterator(Node node) {
-        // Sets the cursor of this iterator to the given node
-        current = node;
+    public LanguageModel(int windowLength, int seed) {
+        this.windowLength = windowLength;
+        randomGenerator = new Random(seed);
+        CharDataMap = new HashMap<>();
     }
 
-    /** Checks if this iterator has more nodes to process */
-    public boolean hasNext() {
-        return (current != null);
+    public LanguageModel(int windowLength) {
+        this.windowLength = windowLength;
+        randomGenerator = new Random();
+        CharDataMap = new HashMap<>();
     }
-  
-    /** Returns the CharData object of the current element in this iteration,
-     *  and advances the cursor to the next element.
-     *  Should be called only if hasNext() is true. */
-    public CharData next() {
-        CharData cd = current.cd;
-        current = current.next;
-        return cd;
+
+    public void trainOnText(String text) {
+
+    }
+
+    public void calculateProbabilities(List probs) {
+    }
+
+    public char getRandomChar(List probs) {
+       
+    }
+
+    public String generate(String initialText, int textLength) {
+        StringBuilder generatedText = new StringBuilder(initialText);
+
+        while (generatedText.length() < textLength) {
+            String currentWindow = generatedText.substring(generatedText.length() - windowLength);
+            if (CharDataMap.containsKey(currentWindow)) {
+                List probabilities = CharDataMap.get(currentWindow);
+                char randomChar = getRandomChar(probabilities);
+                generatedText.append(randomChar);
+            } else {
+
+                break;
+            }
+        }
+
+        return generatedText.toString();
+    }
+
+    public String toString() {
+        StringBuilder str = new StringBuilder();
+        for (String key : CharDataMap.keySet()) {
+            List keyProbs = CharDataMap.get(key);
+            str.append(key).append(" : ").append(keyProbs).append("\n");
+        }
+        return str.toString();
+    }
+
+    public static void main(String[] args) {
+        LanguageModel model = new LanguageModel(3, 42);
+        model.trainOnText("your_corpus_text");
+
+        System.out.println("Model: \n" + model);
+
+        String generatedText = model.generate("initial", 100);
+        System.out.println("Generated Text: \n" + generatedText);
     }
 }
