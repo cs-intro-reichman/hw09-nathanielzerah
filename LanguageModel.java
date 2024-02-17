@@ -70,21 +70,18 @@ public class LanguageModel {
 
     // Returns a random character from the given probabilities list.
 	public char getRandomChar(List probs) {
-        if (!CharDataMap.containsKey(window)) {
+        List<CharData> probs = CharDataMap.get(window);
+        if (probs == null || probs.isEmpty()) {
             return ' '; 
         }
-        List probs = CharDataMap.get(window);
-        double rand = Math.random();
-        double cumulativeProbability = 0;
-    
-        for (int i = 0; i < probs.size(); i++) {
-            CharData charData = (CharData) probs.get(i);
-            cumulativeProbability += charData.probability;
+        double rand = randomGenerator.nextDouble(); 
+        double cumulativeProbability = 0.0;
+        for (CharData charData : probs) {
+            cumulativeProbability += charData.getProbability(); 
             if (rand <= cumulativeProbability) {
-                return charData.character; 
+                return charData.getCharacter(); 
             }
         }
-    
         return ' ';
 	}
 
@@ -97,14 +94,12 @@ public class LanguageModel {
 	 */
 	public String generate(String initialText, int textLength) {
         StringBuilder generatedText = new StringBuilder(initialText);
-            while (generatedText.length() < textLength + initialText.length()) {
-                String currentWindow = generatedText.substring(generatedText.length() - windowLength);
-                List probs = CharDataMap.get(currentWindow);
-                if (probs == null) {
-                    break;             }
-                char nextChar = getRandomChar(probs); 
-                generatedText.append(nextChar);
-            }
+        while (generatedText.length() < textLength + initialText.length()) {
+            String currentWindow = generatedText.substring(Math.max(0, generatedText.length() - windowLength));
+            
+            char nextChar = getRandomChar(currentWindow); 
+            generatedText.append(nextChar);
+        }
         return generatedText.toString();
 	}
 
