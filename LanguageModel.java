@@ -1,5 +1,8 @@
 import java.util.HashMap;
 import java.util.Random;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.util.Scanner;
 
 public class LanguageModel {
     HashMap<String, List> CharDataMap;
