@@ -13,7 +13,7 @@ public class List {
     }
 
     public CharData getFirst() {
-        return first == null ? null : first.data;
+        return first == null ? null : first.cp;
     }
 
     public void addFirst(char chr) {
@@ -26,7 +26,7 @@ public class List {
         StringBuilder builder = new StringBuilder("[");
         Node current = first;
         while (current != null) {
-            builder.append(current.data.getChar());
+            builder.append(current.cp.getChar());
             if (current.next != null) {
                 builder.append(", ");
             }
@@ -40,7 +40,7 @@ public class List {
         Node current = first;
         int index = 0;
         while (current != null) {
-            if (current.data.getChar() == chr) {
+            if (current.cp.getChar() == chr) {
                 return index;
             }
             current = current.next;
@@ -52,8 +52,8 @@ public class List {
     public void update(char chr) {
         Node current = first;
         while (current != null) {
-            if (current.data.getChar() == chr) {
-                current.data.incrementCount();
+            if (current.cp.getChar() == chr) {
+                current.cp.incrementCount();
                 return;
             }
             current = current.next;
@@ -63,7 +63,7 @@ public class List {
 
     public boolean remove(char chr) {
         if (first == null) return false;
-        if (first.data.getChar() == chr) {
+        if (first.cp.getChar() == chr) {
             first = first.next;
             size--;
             return true;
@@ -71,7 +71,7 @@ public class List {
 
         Node current = first;
         while (current.next != null) {
-            if (current.next.data.getChar() == chr) {
+            if (current.next.cp.getChar() == chr) {
                 current.next = current.next.next;
                 size--;
                 return true;
@@ -88,7 +88,7 @@ public class List {
         for (int i = 0; i < index; i++) {
             current = current.next;
         }
-        return current.data;
+        return current.cp;
     }
 
     public CharData[] toArray() {
@@ -96,7 +96,7 @@ public class List {
         Node current = first;
         int i = 0;
         while (current != null) {
-            arr[i++] = current.data;
+            arr[i++] = current.cp;
             current = current.next;
         }
         return arr;
