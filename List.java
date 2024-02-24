@@ -139,4 +139,14 @@ public class List {
         // Returns an iterator that starts in that element
 	    return new ListIterator(current);
     }
+
+    public int getTotalCount() {
+        int total = 0;
+        Node current = first;
+        while (current != null) {
+            total += current.cp.getCount();
+            current = current.next;
+        }
+        return total;
+    }
 }
