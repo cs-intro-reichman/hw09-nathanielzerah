@@ -53,7 +53,7 @@ public class LanguageModel {
         for (String key : CharDataMap.keySet()) {
             List list = CharDataMap.get(key);
             int total = list.getTotalCount();
-            for (int i = 0; i < list.size(); i++) {
+            for (int i = 0; i < list.getSize(); i++) {
                 CharData charData = list.get(i);
                 charData.setProbability(((double) charData.getCount()) / total);
             }
@@ -64,7 +64,7 @@ public class LanguageModel {
 	public char getRandomChar(List probs) {
         double p = Math.random();
         double cumulativeProbability = 0.0;
-        for (int i = 0; i < probs.size(); i++) {
+        for (int i = 0; i < probs.getSize(); i++) {
             CharData charData = probs.get(i);
             cumulativeProbability += charData.getProbability();
             if (p <= cumulativeProbability) {
