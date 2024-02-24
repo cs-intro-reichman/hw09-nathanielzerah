@@ -34,11 +34,28 @@ public class CharData {
 	}
 	
 	public char getChar() {
-        	return this.chr;
-    	}
+        return this.chr;
+    }
 
-    	public void incrementCount() {
-        	this.count++;
-    	}
+	public int getCount() {
+        return count;
+    }
+
+
+    public void incrementCount() {
+        this.count++;
+    }
+    
+	public void setProbability(double p) {
+        this.p = p;
+    }
+
+    public double getProbability() {
+        return p;
+    }
+
+    public void setCumulativeProbability(double cp) {
+        this.cp = cp;
+    }
     
 }
