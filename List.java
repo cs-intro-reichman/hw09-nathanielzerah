@@ -1,7 +1,3 @@
-import java.util.ListIterator;
-
-import org.w3c.dom.Node;
-
 /** A linked list of character data objects.
  *  (Actually, a list of Node objects, each holding a reference to a character data object.
  *  However, users of this class are not aware of the Node objects. As far as they are concerned,
@@ -44,10 +40,7 @@ public class List {
         StringBuilder sb = new StringBuilder();
         Node current = first;
         while (current != null) {
-             sb.append(current.cp.toString());
-             if (current.next != null) {
-                sb.append(", "); 
-            }
+            sb.append(current.cp.toString());
             current = current.next;
         }
         return sb.toString();
@@ -63,8 +56,8 @@ public class List {
             if (current.cp.getChar() == chr) {
                 return index;
             }
-            index++;
             current = current.next;
+            index++;
         }
         return -1;
     }
@@ -76,7 +69,7 @@ public class List {
         Node current = first;
         while (current != null) {
             if (current.cp.getChar() == chr) {
-                current.cp.increment();
+                current.cp.incrementCount();
                 return;
             }
             current = current.next;
@@ -88,19 +81,19 @@ public class List {
      *  in this list, removes this CharData object from the list and returns
      *  true. Otherwise, returns false. */
     public boolean remove(char chr) {
-        if (first == null) return false;
-        if (first.cp.getChar() == chr) { 
-            first = first.next;
-            size--;
-            return true;
-        }
+        Node prev = null;
         Node current = first;
-        while (current.next != null) {
-            if (current.next.cp.getChar() == chr) {
-                current.next = current.next.next;
+        while (current != null) {
+            if (current.cp.getChar() == chr) {
+                if (prev == null) {
+                    first = current.next;
+                } else {
+                    prev.next = current.next;
+                }
                 size--;
                 return true;
             }
+            prev = current;
             current = current.next;
         }
         return false;
@@ -111,7 +104,7 @@ public class List {
      *  throws an IndexOutOfBoundsException. */
     public CharData get(int index) {
         if (index < 0 || index >= size) {
-            throw new IndexOutOfBoundsException("Index: " + index + ", Size: " + size);
+            throw new IndexOutOfBoundsException();
         }
         Node current = first;
         for (int i = 0; i < index; i++) {
