@@ -32,4 +32,13 @@ public class CharData {
 	public String toString() {
 		return "(" + chr + " " + count + " " + p + " " + cp + ")";
 	}
+	
+	public char getChar() {
+        	return this.chr;
+    	}
+
+    	public void incrementCount() {
+        	this.count++;
+    	}
+    
 }
