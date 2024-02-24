@@ -33,56 +33,45 @@ public class LanguageModel {
 
     /** Builds a language model from the text in the given file (the corpus). */
 	public void train(String fileName) {
-		In in = new In(fileName); 
-        String text = in.readAll(); 
-        in.close();
-
-        for (int i = 0; i <= text.length() - windowLength; i++) {
+        In in = new In(fileName);
+        String text = in.readAll();
+        for (int i = 0; i <= text.length() - windowLength - 1; i++) {
             String window = text.substring(i, i + windowLength);
-            char nextChar = i + windowLength < text.length() ? text.charAt(i + windowLength) : ' '; 
-
-            CharDataMap.putIfAbsent(window, new List());
-            List charList = CharDataMap.get(window);
-
-            charList.updateCharData(nextChar);
+            char nextChar = text.charAt(i + windowLength);
+            List list = CharDataMap.get(window);
+            if (list == null) {
+                list = new List();
+                CharDataMap.put(window, list);
+            }
+            list.update(nextChar);
         }
 	}
 
     // Computes and sets the probabilities (p and cp fields) of all the
 	// characters in the given list. */
 	public void calculateProbabilities(List probs) {				
-        double total = 0;
-        
-        for (int i = 0; i < probs.size(); i++) {
-            CharData charData = (CharData) probs.get(i);
-            total += charData.frequency;
-        }
-       
-        double cumulativeProbability = 0;
-        for (int i = 0; i < probs.size(); i++) {
-            CharData charData = (CharData) probs.get(i);
-            double probability = charData.frequency / total; 
-            cumulativeProbability += probability; 
-            charData.probability = probability; 
-            charData.cumulativeProbability = cumulativeProbability; 
+        for (String key : CharDataMap.keySet()) {
+            List list = CharDataMap.get(key);
+            int total = list.getTotalCount();
+            for (int i = 0; i < list.size(); i++) {
+                CharData charData = list.get(i);
+                charData.setProbability(((double) charData.getCount()) / total);
+            }
         }
 	}
 
     // Returns a random character from the given probabilities list.
 	public char getRandomChar(List probs) {
-        List<CharData> probs = CharDataMap.get(window);
-        if (probs == null || probs.isEmpty()) {
-            return ' '; 
-        }
-        double rand = randomGenerator.nextDouble(); 
+        double p = Math.random();
         double cumulativeProbability = 0.0;
-        for (CharData charData : probs) {
-            cumulativeProbability += charData.getProbability(); 
-            if (rand <= cumulativeProbability) {
-                return charData.getCharacter(); 
+        for (int i = 0; i < probs.size(); i++) {
+            CharData charData = probs.get(i);
+            cumulativeProbability += charData.getProbability();
+            if (p <= cumulativeProbability) {
+                return charData.getChar();
             }
         }
-        return ' ';
+        return ' '; 
 	}
 
     /**
@@ -94,10 +83,13 @@ public class LanguageModel {
 	 */
 	public String generate(String initialText, int textLength) {
         StringBuilder generatedText = new StringBuilder(initialText);
-        while (generatedText.length() < textLength + initialText.length()) {
-            String currentWindow = generatedText.substring(Math.max(0, generatedText.length() - windowLength));
-            
-            char nextChar = getRandomChar(currentWindow); 
+        for (int i = windowLength; i < textLength; i++) {
+            String window = generatedText.substring(i - windowLength, i);
+            List list = CharDataMap.get(window);
+            if (list == null) {
+                break; 
+            }
+            char nextChar = getRandomChar(list);
             generatedText.append(nextChar);
         }
         return generatedText.toString();
@@ -114,15 +106,6 @@ public class LanguageModel {
 	}
 
     public static void main(String[] args) {
-        LanguageModel model = new LanguageModel(3);
-    
-        model.train("shakespeareinlove.txt");
-        model.train("originofspecies.txt");
-        
-        model.calculateProbabilities();
-        
-        String generatedText = model.generate("The ", 100); 
-        
-        System.out.println(generatedText);
+		// Your code goes here
     }
 }
