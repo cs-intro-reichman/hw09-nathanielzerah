@@ -30,7 +30,7 @@ public class List {
     /** GIVE Adds a CharData object with the given character to the beginning of this list. */
     public void addFirst(char chr) {
         Node newNode = new Node(new CharData(chr));
-        newNode.next = first;
+        newNode.next = first; 
         first = newNode;
         size++;
     }
@@ -40,8 +40,8 @@ public class List {
         StringBuilder sb = new StringBuilder();
         Node current = first;
         while (current != null) {
-            sb.append(current.cp.toString());
-            current = current.next;
+            sb.append(current.cp.chr); 
+            current = current.next; 
         }
         return sb.toString();
     }
@@ -53,9 +53,7 @@ public class List {
         Node current = first;
         int index = 0;
         while (current != null) {
-            if (current.cp.getChar() == chr) {
-                return index;
-            }
+            if (current.cp.chr == chr) return index;
             current = current.next;
             index++;
         }
@@ -68,8 +66,8 @@ public class List {
     public void update(char chr) {
         Node current = first;
         while (current != null) {
-            if (current.cp.getChar() == chr) {
-                current.cp.incrementCount();
+            if (current.cp.chr == chr) {
+                current.cp.count++;
                 return;
             }
             current = current.next;
@@ -84,13 +82,10 @@ public class List {
         Node prev = null;
         Node current = first;
         while (current != null) {
-            if (current.cp.getChar() == chr) {
-                if (prev == null) {
-                    first = current.next;
-                } else {
-                    prev.next = current.next;
-                }
-                size--;
+            if (current.cp.chr == chr) {
+                if (prev == null) first = current.next; 
+                else prev.next = current.next; 
+                size--; 
                 return true;
             }
             prev = current;
@@ -103,13 +98,9 @@ public class List {
      *  If the index is negative or is greater than the size of this list, 
      *  throws an IndexOutOfBoundsException. */
     public CharData get(int index) {
-        if (index < 0 || index >= size) {
-            throw new IndexOutOfBoundsException();
-        }
+        if (index < 0 || index >= size) throw new IndexOutOfBoundsException("Index invalide: " + index);
         Node current = first;
-        for (int i = 0; i < index; i++) {
-            current = current.next;
-        }
+        for (int i = 0; i < index; i++) current = current.next; 
         return current.cp;
     }
 
@@ -138,15 +129,5 @@ public class List {
         }
         // Returns an iterator that starts in that element
 	    return new ListIterator(current);
-    }
-
-    public int getTotalCount() {
-        int total = 0;
-        Node current = first;
-        while (current != null) {
-            total += current.cp.getCount();
-            current = current.next;
-        }
-        return total;
     }
 }
