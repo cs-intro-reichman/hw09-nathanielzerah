@@ -92,12 +92,20 @@ public class LanguageModel {
 
     /** Returns a string representing the map of this language model. */
 	public String toString() {
-		StringBuilder str = new StringBuilder();
-		for (String key : CharDataMap.keySet()) {
-			List keyProbs = CharDataMap.get(key);
-			str.append("(" + key + " : " + keyProbs + "\n" + ")");
-		}
-		return str.toString();
+		    StringBuilder str = new StringBuilder("(");
+    for (String key : CharDataMap.keySet()) {
+        List keyProbs = CharDataMap.get(key);
+        StringBuilder probsStr = new StringBuilder();
+        double cumulativeProbability = 0.0;
+        for (int i = 0; i < keyProbs.getSize(); i++) {
+            CharData charData = keyProbs.get(i);
+            cumulativeProbability += charData.p; 
+            probsStr.append(String.format("(%c %d %.4f %.4f) ", charData.chr, charData.count, charData.p, cumulativeProbability));
+        }
+        str.append(key + " : " + probsStr.toString().trim() + "\n");
+    }
+    str.append(")"); 
+    return str.toString();
 	}
 
     public static void main(String[] args) {
