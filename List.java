@@ -43,14 +43,12 @@ public class List {
     builder.append("(");
     while (current != null) {
         cumulativeProbability += current.cp.p;
-        String formattedNumber = String.format("%.4f", cumulativeProbability);
-        // Suppression des zéros inutiles tout en s'assurant d'avoir au moins un chiffre après la virgule
-        formattedNumber = formattedNumber.replaceAll("([0-9])\\.0+$", "$1.0").replaceAll("([0-9])\\.0+([1-9]+)", "$1.$2");
-        // S'assurer que les nombres comme 1. sont correctement formatés comme 1.0
-        if (formattedNumber.endsWith(".")) {
-            formattedNumber += "0";
-        }
-        builder.append(String.format("(%c %d %s)", current.cp.chr, current.cp.count, formattedNumber));
+        String probability = String.format("%.4f", current.cp.p).replaceAll("0*$", "").replaceAll("(\\.)$", "$1");
+        String cumulative = String.format("%.4f", cumulativeProbability).replaceAll("0*$", "").replaceAll("(\\.)$", "$1");
+        // S'assurer qu'il y a au moins un chiffre après la virgule
+        probability = probability.contains(".") ? probability : probability + ".0";
+        cumulative = cumulative.contains(".") ? cumulative : cumulative + ".0";
+        builder.append(String.format("(%c %d %s %s)", current.cp.chr, current.cp.count, probability, cumulative));
         if (current.next != null) {
             builder.append(" ");
         }
