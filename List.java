@@ -45,9 +45,11 @@ public class List {
         cumulativeProbability += current.cp.p;
         String probability = String.format("%.4f", current.cp.p).replaceAll("0*$", "").replaceAll("(\\.)$", "$1");
         String cumulative = String.format("%.4f", cumulativeProbability).replaceAll("0*$", "").replaceAll("(\\.)$", "$1");
-        // S'assurer qu'il y a au moins un chiffre après la virgule
         probability = probability.contains(".") ? probability : probability + ".0";
         cumulative = cumulative.contains(".") ? cumulative : cumulative + ".0";
+	    if (cumulative.endsWith(".")) {
+    cumulative += "0"; // Ajoute "0" si la chaîne se termine par un point pour afficher correctement 1.0
+	}
         builder.append(String.format("(%c %d %s %s)", current.cp.chr, current.cp.count, probability, cumulative));
         if (current.next != null) {
             builder.append(" ");
