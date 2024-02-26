@@ -32,30 +32,4 @@ public class CharData {
 	public String toString() {
 		return "(" + chr + " " + count + " " + p + " " + cp + ")";
 	}
-	
-	public char getChar() {
-        return this.chr;
-    }
-
-	public int getCount() {
-        return count;
-    }
-
-
-    public void incrementCount() {
-        this.count++;
-    }
-    
-	public void setProbability(double p) {
-        this.p = p;
-    }
-
-    public double getProbability() {
-        return p;
-    }
-
-    public void setCumulativeProbability(double cp) {
-        this.cp = cp;
-    }
-    
 }
