@@ -37,13 +37,18 @@ public class List {
     
     /** GIVE Textual representation of this list. */
     public String toString() {
-        StringBuilder sb = new StringBuilder();
+        StringBuilder builder = new StringBuilder();
         Node current = first;
+        builder.append("(");
         while (current != null) {
-            sb.append(current.cp.chr); 
-            current = current.next; 
+            builder.append(current.cp.toString());
+            if (current.next != null) {
+                builder.append(", ");
+            }
+            current = current.next;
         }
-        return sb.toString();
+        builder.append(")");
+        return builder.toString();
     }
 
     /** Returns the index of the first CharData object in this list
