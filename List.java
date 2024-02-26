@@ -37,20 +37,20 @@ public class List {
     
     /** GIVE Textual representation of this list. */
     public String toString() {
-        StringBuilder builder = new StringBuilder();
-        double cumulativeProbability = 0.0; 
-        Node current = first;
-        builder.append("(");
-        while (current != null) {
-            cumulativeProbability += current.cp.p; 
-            builder.append(String.format("(%c %d %.4f %.4f)", current.cp.chr, current.cp.count, current.cp.p, cumulativeProbability));
-            if (current.next != null) {
-                builder.append(", ");
-            }
-            current = current.next;
+    StringBuilder builder = new StringBuilder();
+    double cumulativeProbability = 0.0;
+    Node current = first;
+    builder.append("(");
+    while (current != null) {
+        cumulativeProbability += current.cp.p;
+        builder.append(String.format("(%c %d %.4f %.4f)", current.cp.chr, current.cp.count, current.cp.p, cumulativeProbability));
+        if (current.next != null) {
+            builder.append(" "); // Utilisez un espace au lieu d'une virgule pour la séparation
         }
-        builder.append(")");
-        return builder.toString();
+        current = current.next;
+    }
+    builder.append(")");
+    return builder.toString().replaceAll("0+\\)$", "0)");
     }
 
     /** Returns the index of the first CharData object in this list
