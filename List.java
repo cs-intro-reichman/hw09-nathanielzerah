@@ -43,14 +43,17 @@ public class List {
     builder.append("(");
     while (current != null) {
         cumulativeProbability += current.cp.p;
-        builder.append(String.format("(%c %d %.4f %.4f)", current.cp.chr, current.cp.count, current.cp.p, cumulativeProbability));
+        String formattedNumber = String.format("%.4f", cumulativeProbability);
+        // Suppression des zéros inutiles tout en s'assurant d'avoir au moins un chiffre après la virgule
+        formattedNumber = formattedNumber.replaceAll("([0-9])\\.0+$", "$1.0").replaceAll("0+?$", "");
+        builder.append(String.format("(%c %d %s)", current.cp.chr, current.cp.count, formattedNumber));
         if (current.next != null) {
-            builder.append(" "); // Utilisez un espace au lieu d'une virgule pour la séparation
+            builder.append(" ");
         }
         current = current.next;
     }
     builder.append(")");
-    return builder.toString().replaceAll("0+\\)$", "0)");
+    return builder.toString();
     }
 
     /** Returns the index of the first CharData object in this list
