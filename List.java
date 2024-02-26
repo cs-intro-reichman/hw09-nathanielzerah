@@ -48,7 +48,7 @@ public class List {
         probability = probability.contains(".") ? probability : probability + ".0";
         cumulative = cumulative.contains(".") ? cumulative : cumulative + ".0";
 	    if (cumulative.endsWith(".")) {
-    cumulative += "0"; // Ajoute "0" si la chaîne se termine par un point pour afficher correctement 1.0
+    cumulative += "0";
 	}
         builder.append(String.format("(%c %d %s %s)", current.cp.chr, current.cp.count, probability, cumulative));
         if (current.next != null) {
