@@ -93,12 +93,10 @@ public class LanguageModel {
     /** Returns a string representing the map of this language model. */
 	public String toString() {
 			StringBuilder str = new StringBuilder();
-        str.append("(");
 		for (String key : CharDataMap.keySet()) {
 			List keyProbs = CharDataMap.get(key);
 			str.append(key + " : " + keyProbs + "\n");
 		}
-        str.append(")");
 		return str.toString();
 	}
 
