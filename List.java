@@ -37,7 +37,7 @@ public class List {
     
     /** GIVE Textual representation of this list. */
     public String toString() {
-	    StringBuilder builder = new StringBuilder();
+    StringBuilder builder = new StringBuilder();
     double cumulativeProbability = 0.0;
     Node current = first;
     builder.append("(");
@@ -45,7 +45,11 @@ public class List {
         cumulativeProbability += current.cp.p;
         String formattedNumber = String.format("%.4f", cumulativeProbability);
         // Suppression des zéros inutiles tout en s'assurant d'avoir au moins un chiffre après la virgule
-        formattedNumber = formattedNumber.replaceAll("([0-9])\\.0+$", "$1.0").replaceAll("0+?$", "");
+        formattedNumber = formattedNumber.replaceAll("([0-9])\\.0+$", "$1.0").replaceAll("([0-9])\\.0+([1-9]+)", "$1.$2");
+        // S'assurer que les nombres comme 1. sont correctement formatés comme 1.0
+        if (formattedNumber.endsWith(".")) {
+            formattedNumber += "0";
+        }
         builder.append(String.format("(%c %d %s)", current.cp.chr, current.cp.count, formattedNumber));
         if (current.next != null) {
             builder.append(" ");
