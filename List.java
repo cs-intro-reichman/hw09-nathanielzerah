@@ -38,10 +38,12 @@ public class List {
     /** GIVE Textual representation of this list. */
     public String toString() {
         StringBuilder builder = new StringBuilder();
+        double cumulativeProbability = 0.0; 
         Node current = first;
         builder.append("(");
         while (current != null) {
-            builder.append(current.cp.toString());
+            cumulativeProbability += current.cp.p; 
+            builder.append(String.format("(%c %d %.4f %.4f)", current.cp.chr, current.cp.count, current.cp.p, cumulativeProbability));
             if (current.next != null) {
                 builder.append(", ");
             }
