@@ -47,13 +47,13 @@ public class LanguageModel {
     // Computes and sets the probabilities (p and cp fields) of all the
 	// characters in the given list. */
 	public void calculateProbabilities(List probs) {				
-	        int total = 0;
-        for (int i = 0; i < probs.getSize(); i++) {
-            total += probs.get(i).count;
+        int total = 0;
+        for (int i = 0; i < probs.size(); i++) {
+            total += probs.get(i).counter;
         }
-        for (int i = 0; i < probs.getSize(); i++) {
+        for (int i = 0; i < probs.size(); i++) {
             CharData charData = probs.get(i);
-            charData.p = (double) charData.count / total;
+            charData.p = (double) charData.counter / total;
         }
 	}
 
@@ -92,7 +92,7 @@ public class LanguageModel {
 
     /** Returns a string representing the map of this language model. */
 	public String toString() {
-			StringBuilder str = new StringBuilder();
+        StringBuilder str = new StringBuilder();
 		for (String key : CharDataMap.keySet()) {
 			List keyProbs = CharDataMap.get(key);
 			str.append(key + " : " + keyProbs + "\n");
