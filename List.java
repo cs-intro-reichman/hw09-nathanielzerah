@@ -37,7 +37,7 @@ public class List {
     
     /** GIVE Textual representation of this list. */
     public String toString() {
-    StringBuilder builder = new StringBuilder();
+	    StringBuilder builder = new StringBuilder();
     double cumulativeProbability = 0.0;
     Node current = first;
     builder.append("(");
