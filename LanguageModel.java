@@ -35,7 +35,7 @@ public class LanguageModel {
 	public void train(String fileName) {
         In input = new In(fileName); 
         String text = input.readAll();
-        for (int i = 0; i <= text.length() - windowLength; i++) {
+        for (int i = 0; i <= text.length() - windowLength - 1; i++) {
             String window = text.substring(i, i + windowLength);
             char nextChar = text.charAt(i + windowLength);
             List charList = CharDataMap.getOrDefault(window, new List());
